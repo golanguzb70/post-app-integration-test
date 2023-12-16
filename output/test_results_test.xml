@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites>
+  <testsuite name="API IntegrationTest" package="test.yml" tests="3">
+    <testcase classname="test.yml" name="Success-GET-single-post" time="0.005253629">
+      <system-out><![CDATA[
+]]></system-out>
+      <system-err><![CDATA[
+]]></system-err>
+    </testcase>
+    <testcase classname="test.yml" name="Not-Found-GET-single-post" time="0.00274971">
+      <system-out><![CDATA[
+]]></system-out>
+      <system-err><![CDATA[
+]]></system-err>
+    </testcase>
+    <testcase classname="test.yml" name="Invalid-UUID-GET-single-post" time="0.002616194">
+      <system-out><![CDATA[
+]]></system-out>
+      <system-err><![CDATA[
+]]></system-err>
+    </testcase>
+  </testsuite>
+</testsuites>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites>
+  <testsuite name="API IntegrationTest" package="post_crud.yml" tests="7">
+    <testcase classname="post_crud.yml" name="success-create-post" time="0.005817645">
+      <system-out><![CDATA[
+]]></system-out>
+      <system-err><![CDATA[
+]]></system-err>
+    </testcase>
+    <testcase classname="post_crud.yml" name="success-get-post" time="0.003593648">
+      <system-out><![CDATA[
+]]></system-out>
+      <system-err><![CDATA[
+]]></system-err>
+    </testcase>
+    <testcase classname="post_crud.yml" name="fail-not-found-single-post" time="0.003914465">
+      <system-out><![CDATA[
+]]></system-out>
+      <system-err><![CDATA[
+]]></system-err>
+    </testcase>
+    <testcase classname="post_crud.yml" name="Invalid-UUID-GET-single-post" time="0.004369929">
+      <system-out><![CDATA[
+]]></system-out>
+      <system-err><![CDATA[
+]]></system-err>
+    </testcase>
+    <testcase classname="post_crud.yml" name="success-update-post" time="0.015874981">
+      <system-out><![CDATA[
+]]></system-out>
+      <system-err><![CDATA[
+]]></system-err>
+    </testcase>
+    <testcase classname="post_crud.yml" name="success-delete-post" time="0.008986088">
+      <system-out><![CDATA[
+]]></system-out>
+      <system-err><![CDATA[
+]]></system-err>
+    </testcase>
+    <testcase classname="post_crud.yml" name="success-not-found-single-post" time="0.008933056">
+      <system-out><![CDATA[
+]]></system-out>
+      <system-err><![CDATA[
+]]></system-err>
+    </testcase>
+  </testsuite>
+</testsuites>

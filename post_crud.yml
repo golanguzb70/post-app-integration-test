@@ -1,0 +1,117 @@
+name: API IntegrationTest
+
+vars:
+  url: http://localhost:8000/v1
+  existing_post_id: bfcef15e-b60c-4254-b1c1-9b33dbd116f2
+  not_existing_post_id: bfcef15e-b60c-4254-b1c1-9b33dbd116f1
+  invalid_uuid: "invalid_uuid"
+  access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsicG9zdC1mcm9udCJdLCJleHAiOjE3MDI3MjI2NDIsImlhdCI6MTcwMjcwNDY0Miwicm9sZSI6InVzZXIiLCJzdWIiOiIyZGE3YTE4My0zNzE5LTRhY2MtOWVlNy00NDYwMzg3NTg0MDUifQ.75dBrotYF-NGxYUGBA3ho0zHwgAwgsQouDGyIsQXzP0"
+
+testcases:
+- name: success-create-post
+  steps:
+  - type: http
+    method: POST
+    url: {{.url}}/post
+    bodyFile: data/create_post_success
+    preserve_bodyfile: true
+    headers:
+      Authorization: {{.access_token}}
+      Accept: application/json
+      Content-Type: application/json
+    assertions:
+    - result.statuscode ShouldEqual 201
+    - result.bodyjson.status_id ShouldEqual success
+    - result.bodyjson.data ShouldContainKey slug
+    vars:
+      existing_post_id:
+        from: result.bodyjson.data.id
+
+- name: success-get-post
+  steps:
+  - type: http
+    method: GET
+    url: {{.url}}/post/{{.success-create-post.existing_post_id}}
+    headers:
+      Authorization: {{.access_token}}
+      Accept: application/json
+      Content-Type: application/json
+    assertions:
+    - result.statuscode ShouldEqual 200
+    - result.bodyjson.status_id ShouldEqual success
+    - result.bodyjson.data ShouldContainKey slug
+    vars:
+      post:
+        from: result.bodyjson.data
+
+- name: fail-not-found-single-post
+  steps:
+  - type: http
+    method: GET
+    url: {{.url}}/post/{{.not_existing_post_id}}
+    headers:
+      Authorization: {{.access_token}}
+      Accept: application/json
+      Content-Type: application/json
+    assertions:
+    - result.statuscode ShouldEqual 404
+    - result.bodyjson.status_id ShouldEqual not_found
+    - result.bodyjson.data ShouldBeZeroValue
+
+- name: bad-request-get-single-post.
+  steps:
+  - type: http
+    method: GET
+    url: {{.url}}/post/{{.invalid_uuid}}
+    headers:
+      Authorization: {{.access_token}}
+      Accept: application/json
+      Content-Type: application/json
+    assertions:
+    - result.statuscode ShouldEqual 400
+    - result.bodyjson.status_id ShouldEqual bad_request
+    - result.bodyjson.data ShouldBeZeroValue
+
+- name: success-update-post
+  steps:
+  - type: http
+    method: PUT
+    url: {{.url}}/post
+    body: "{{.success-get-post.post}}"
+    headers:
+      Authorization: {{.access_token}}
+      Accept: application/json
+      Content-Type: application/json
+    assertions:
+    - result.statuscode ShouldEqual 200
+    - result.bodyjson.status_id ShouldEqual success
+    - result.bodyjson.data ShouldContainKey slug
+    output: 
+      post: "{{.success-get-post.post}}"
+
+- name: success-delete-post
+  steps:
+  - type: http
+    method: DELETE
+    url: {{.url}}/post/{{.success-create-post.existing_post_id}}
+    headers:
+      Authorization: {{.access_token}}
+      Accept: application/json
+      Content-Type: application/json
+    assertions:
+    - result.statuscode ShouldEqual 200
+    - result.bodyjson.status_id ShouldEqual success
+
+- name: success-not-found-single-post
+  steps:
+  - type: http
+    method: GET
+    url: {{.url}}/post/{{.success-create-post.existing_post_id}}
+    headers:
+      Authorization: {{.access_token}}
+      Accept: application/json
+      Content-Type: application/json
+    assertions:
+    - result.statuscode ShouldEqual 404
+    - result.bodyjson.status_id ShouldEqual not_found
+    - result.bodyjson.data ShouldBeZeroValue
